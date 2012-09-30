@@ -1,0 +1,4 @@
+cron:
+- description: add timeframe tags
+  url: /tasks/update_timeframe_tags
+  schedule: every 1 hours

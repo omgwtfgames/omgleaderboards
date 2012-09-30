@@ -1,0 +1,34 @@
+application: omgleaderboards
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: django
+  version: "1.3"
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'settings'
+
+handlers:
+- url: /add
+  script: main.app
+
+- url: /get/.*
+  script: main.app
+
+- url: /addsalt
+  script: main.app
+# Set this as admin only if you want to prevent others using
+# your server to store highscores.
+#  login: admin
+
+- url: /tasks/update_timeframe_tags
+  script: main.app
+  login: admin
+
+- url: /.*
+  script: main.app
