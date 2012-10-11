@@ -24,13 +24,17 @@ Or, on the commandline use curl like:
 
     curl --data "id=somegame&nickname=AwesomePlayer&score=1110&hash=6b959d6bf1f873a1c3c3f63f2d8a00ca" https://omgleaderboards.appspot.com/add
 
+*(or, including 'platform' and 'extra' fields)*
+
+    curl --data "id=somegame&nickname=AwesomePlayer&score=1110&platform=android&extra=level:1&hash=9eb892ff26bd3471f59fbc4b2c353ea3" https://omgleaderboards.appspot.com/add
+
 Obviously in your game you would make this POST request programatically however you want.
 
 ### The hash is generated from the game_id, score, nickname and the salt, like:
 
 ```python
 import hashlib
-str_to_hash = game_id + str(score) + nickname + secret_salt
+str_to_hash = game_id + str(score) + nickname + platform + extra + secret_salt
 hash = hashlib.md5(str_to_hash).hexdigest()
 ```
 

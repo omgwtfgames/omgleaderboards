@@ -45,11 +45,15 @@ class AddScore(webapp2.RequestHandler):
     id,score,nickname and the secrect salt for that game_id.
     """
     game_id = str(self.request.get('id'))
-    score = int(self.request.get('score'))
+    score = str(self.request.get('score'))
     nickname = str(self.request.get('nickname'))
+    platform = str(self.request.get('platform'))
+    extra = str(self.request.get('extra'))
     hash_recieved = str(self.request.get('hash'))
-    if hash_okay(game_id, score, nickname, hash_recieved):
-      s = Score(game_id = game_id, score = score, nickname = nickname)
+    if hash_okay(game_id, [score, nickname, platform, extra], hash_recieved):
+      s = Score(game_id = game_id, score = int(score), nickname = nickname)
+      s.platform = platform
+      s.extra = extra
       s.timeframes = ['today','last7days','last30days']
       s.put()
       # success
@@ -160,7 +164,7 @@ def hours_ago(hrs):
 def mins_ago(mins):
   return datetime.datetime.now() - datetime.timedelta(minutes=mins)
 
-def hash_okay(game_id, score, nickname, hash_recieved):
+def hash_okay(game_id, strings, hash_recieved):
   # pull the secret_salt from
   # the datastore (memcached)
   try:
@@ -175,7 +179,7 @@ def hash_okay(game_id, score, nickname, hash_recieved):
     memcache.add("salt:"+game_id, secret_salt)
 
   #secret_salt = "no_ch3ating_a$$wipe"
-  str_to_hash = game_id+str(score)+nickname+secret_salt
+  str_to_hash = game_id+"".join(strings)+secret_salt
   expected = hashlib.md5(str_to_hash).hexdigest()
   logging.info("Expected hash: " + expected)
 
