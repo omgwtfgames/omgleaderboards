@@ -30,7 +30,7 @@ Or, on the commandline use curl like:
 
 Obviously in your game you would make this POST request programatically however you want.
 
-### The hash is generated from the game_id, score, nickname and the salt, like:
+### The hash is generated like:
 
 ```python
 import hashlib
