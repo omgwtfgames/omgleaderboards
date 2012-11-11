@@ -137,7 +137,8 @@ class GetScores(webapp2.RequestHandler):
       # create a list of dicts for each scoreboard (by timeframe)
       for s in scores:
         sdict = db.to_dict(s)
-        del sdict['timeframes'] # this is redundant now
+        if 'timeframes' in sdict:
+          del sdict['timeframes'] # this is redundant now
         del sdict['game_id'] # this is included just once in the level above
         jdict['scores'][tf].append(sdict)
 
