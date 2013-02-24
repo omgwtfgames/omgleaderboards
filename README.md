@@ -42,7 +42,7 @@ hash = hashlib.md5(str_to_hash).hexdigest()
 
 ## Get scores for a particular game_id:
 
-''(specifying some timeframes and to return the top ten scores)''
+*(specifying some timeframes and to return the top ten scores)*
 
     http://omgleaderboards.appspot.com/get/somegame?timeframes=today+last7days&limit=10
 
