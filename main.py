@@ -1,15 +1,13 @@
 import logging
-import os, datetime
+import os
+import datetime
 import hashlib
 import webapp2
 import jinja2
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import memcache
-#import json
-# we use Django's JSON serializer instead since it handles DateTime gracefully
-from django.utils import simplejson
-from django.core.serializers.json import DjangoJSONEncoder
+import json
 from model import *
 
 #jinja_environment = jinja2.Environment(
@@ -21,6 +19,9 @@ jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 #logging.info('Template path: '+os.path.join(os.path.dirname(__file__), "templates"))
+
+def json_date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
@@ -154,7 +155,7 @@ class GetScores(webapp2.RequestHandler):
       logging.info(jdict)
       # JSON encode and send scores
       self.response.headers['Content-Type'] = 'application/json'
-      self.response.out.write(simplejson.dumps(jdict, cls=DjangoJSONEncoder))
+      self.response.out.write(json.dumps(jdict, default=json_date_handler))
     elif outformat == "tsv":
       self.response.headers['Content-Type'] = 'text/plain'
       self.response.out.write(tsvout)
@@ -281,7 +282,7 @@ class TaskUpdateTimeframeTags(webapp2.RequestHandler):
     #logging.debug(outdict)
     #self.response.status = 200
     #self.response.headers['Content-Type'] = 'application/json'
-    #self.response.out.write(simplejson.dumps(outdict))
+    #self.response.out.write(json.dumps(outdict, default=json_date_handler))
     
 app = webapp2.WSGIApplication([('/', MainPage),
                                ('/add', AddScore),
