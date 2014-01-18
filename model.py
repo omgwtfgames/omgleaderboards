@@ -8,7 +8,7 @@ class Score(db.Model):
   date = db.DateTimeProperty(auto_now_add=True)
   # NOTE: should different platforms just be a different game_id ?
   platform = db.StringProperty() # eg, android,windows,osx,nacl
-  # today, last7days, last30days
+  # today, last7days, last30days, alltime
   timeframes = db.StringListProperty()
   score = db.IntegerProperty()
   nickname = db.StringProperty() # TODO: validator to limit length
