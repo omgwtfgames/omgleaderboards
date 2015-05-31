@@ -6,7 +6,7 @@
 # decide to migrate to different leaderboard solution and wish to transfer the
 # existing scores over.
 #
-# Note that the free quotas Google App Engine for datastore reads are
+# Note that the free quotas for Google App Engine datastore reads are
 # quite limited and the charges beyond the free quota are quite high.
 # It may end up costing you a few dollars to export more than ~20,000
 # scores in a day.

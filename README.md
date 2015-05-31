@@ -52,3 +52,23 @@ hash = hashlib.md5(str_to_hash).hexdigest()
 
 You will probably never need to use this, but it's useful to know that
 it will run in the background each hour.
+
+## Bulk export of data
+
+So, you've decided you need to get your data out of *OMG Leaderboards*. Maybe you want to run
+some offline statistical analysis, maybe you are just moving to another leaderboard system
+and would like to import the existing scores.
+
+Enable the Remote API in app.yaml (uncomment the 'builtins' stuff). Run appcfg.py update so
+this change is reflected in the production app. You may want to put the app into read-only mode
+while you do the export (depending on your requirements).
+
+Edit tools/export_to_jsonlines.py to reflect your domain and App Engine SDK location.
+
+Run: python export_to_jsonlines.py | tee scores.json
+
+This will produce a file with one JSON object per line, for every Score entity in the datastore.
+
+Note that the free quotas for Google App Engine datastore reads are quite limited and the 
+charges beyond the free quota are comparatively high. It may end up costing you a few 
+dollars with billing enabled if you wish to export more than ~20,000 scores in a single day.
